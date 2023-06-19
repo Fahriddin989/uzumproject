@@ -1,12 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin, AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class CustomUserManager(UserManager):
+    use_in_migrations = True
+
     def _create_user(self, phone_number, password, **extra_fields):
         """
         Create and save a user with the given username, email, and password.
@@ -42,7 +44,18 @@ class CustomUserManager(UserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    BIO = (
+        ('M', 'MEN'),
+        ('W', 'WOMEN'),
+        ('O', 'OTHER')
+    )
+
     phone_number = PhoneNumberField(region='UZ', unique=True)
+    first_name = models.CharField(max_length=150, blank=True, null=True)
+    last_name = models.CharField(max_length=150, blank=True, null=True)
+    email = models.EmailField(blank=True, unique=True, null=True)
+    gender = models.CharField(choices=BIO, max_length=1, null=True, blank=True)
+    birthday = models.DateField(null=True, blank=True)
 
     is_staff = models.BooleanField(
         _("staff status"),
@@ -58,8 +71,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ),
     )
 
-    USERNAME_FIELD = 'phone_number'
     objects = CustomUserManager()
+    USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = _('user')
@@ -67,3 +81,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.phone_number} - {'Staff' if self.is_staff else 'User'}"
+
+
+

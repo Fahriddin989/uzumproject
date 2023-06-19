@@ -1,7 +1,17 @@
 from django.contrib import admin
-from .models import Product, Category,ExtraImage
+from .models import Product, Category, ExtraImage, Executor, Rating
 
 
-admin.site.register(Product)
+class ImagesAdmin(admin.TabularInline):
+    model = ExtraImage
+    extra = 1
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [ImagesAdmin]
+
+
 admin.site.register(Category)
-admin.site.register(ExtraImage)
+admin.site.register(Executor)
+admin.site.register(Rating)

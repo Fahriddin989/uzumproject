@@ -24,14 +24,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
 
-    'users.apps.UsersConfig',
+    'users',
     'store',
 
     'phonenumber_field',
     'rest_framework.authtoken',
     'rest_framework',
     'djoser',
+    'ckeditor',
 
 ]
 
@@ -125,13 +127,6 @@ STATIC_ROOT = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 PHONENUMBER_DEFAULT_REGION = 'UZ'
@@ -139,3 +134,19 @@ AUTH_USER_MODEL = "users.CustomUser"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+    },
+}
+
+DJOSER = {
+    'SEND_ACTIVATION_EMAIL': False,
+    'SERIALIZERS': {
+        'current_user': 'users.serializers.UserSerializer',
+    },
+}
