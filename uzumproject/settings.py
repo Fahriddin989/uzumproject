@@ -149,7 +149,7 @@ CKEDITOR_CONFIGS = {
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {
-        'current_user': 'users.serializers.UserSerializer',
+        'current_user': 'users.serializers.CustomUserSerializer',
     },
 }
 

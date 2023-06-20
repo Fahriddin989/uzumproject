@@ -9,13 +9,15 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    discount_price = serializers.SerializerMethodField()
+    discounted_price = serializers.SerializerMethodField()
 
-    def get_discounted_price(self, obj):
-        discount_price = obj.price * (1 - obj.discount)
-        return discount_price
+    def get_discounted_price(self, instance):
+        if instance.discount is not None:
+            return instance.price - instance.price * (instance.discount / 100)
+        else:
+            return instance.price
 
     class Meta:
         model = Product
         fields = ('id', 'category', 'name', 'short_description', 'description',
-                  'quantity_in_stock', 'image', 'price', 'discount', 'new', 'discount_price')
+                  'quantity_in_stock', 'image', 'price', 'discount', 'new', 'discounted_price')
