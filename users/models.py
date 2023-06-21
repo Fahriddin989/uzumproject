@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractBaseUser, UserManager, Permission
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class CustomUserManager(UserManager):
@@ -49,13 +48,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ('W', 'WOMEN'),
         ('O', 'OTHER')
     )
-
+    USER_ROLES = (
+        ('S', 'SELLER'),
+        ('C', 'CUSTOMER')
+    )
     phone_number = PhoneNumberField(region='UZ', unique=True)
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     email = models.EmailField(blank=True, unique=True, null=True)
     gender = models.CharField(choices=BIO, max_length=1, null=True, blank=True)
     birthday = models.DateField(null=True, blank=True)
+    user_role = models.CharField(choices=USER_ROLES, max_length=1, default='C')
 
     is_staff = models.BooleanField(
         _("staff status"),

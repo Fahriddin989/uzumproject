@@ -41,6 +41,7 @@ class Product(models.Model):
     discount = models.DecimalField(decimal_places=2, max_digits=3,
                                    blank=True, null=True, validators=[MaxValueValidator(100)])
     new = models.BooleanField(default=True)
+    executor = models.ForeignKey('Executor', on_delete=models.CASCADE)
 
     # def get_price(self):
     #     return (self.price - self.price * (self.discount_price / 100))
