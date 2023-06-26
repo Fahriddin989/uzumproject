@@ -14,7 +14,6 @@ SECRET_KEY = 'django-insecure-2&8=lxej8k12%8j(=9dc@-szthd$y_&u^v!sk73wf1fe697t-d
 DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', 'localhost:3000', '45.90.217.37']
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -28,6 +27,8 @@ INSTALLED_APPS = [
 
     'users',
     'store',
+    'cart',
+    'order',
 
     'phonenumber_field',
     'rest_framework.authtoken',
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'djoser',
     'ckeditor',
     'corsheaders',
+    'django_filters',
 
 ]
 
@@ -103,6 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 48,
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Category, Executor
+from .models import Product, Category, Executor, Rating
 from users.serializers import CustomUserSerializer
 
 
@@ -11,6 +11,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     discounted_price = serializers.SerializerMethodField()
+    rating = serializers.FloatField()
 
     def get_discounted_price(self, instance):
         if instance.discount is not None:
@@ -20,8 +21,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'category', 'name', 'short_description', 'description',
-                  'quantity_in_stock', 'image', 'price', 'discount', 'new', 'discounted_price')
+        fields = ('id', 'category', 'name', 'short_description', 'description', 'executor',
+                  'quantity_in_stock', 'image', 'price', 'discount', 'created_at', 'discounted_price', 'rating')
 
 
 class ExecutorSerializer(serializers.ModelSerializer):
@@ -36,3 +37,12 @@ class CreateExecutorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Executor
         fields = '__all__'
+
+
+class CreateRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ('user', 'product', 'rating', 'comment')
+
+    # def create(self, validated_data):
+    #

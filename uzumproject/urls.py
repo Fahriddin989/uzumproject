@@ -9,6 +9,8 @@ urlpatterns = [
     re_path(r'^auth/', include('djoser.urls.authtoken')),
 
     path('api/v1/', include('store.urls')),
+    path('api/v1/', include('cart.urls')),
+    path('api/v1/', include('order.urls')),
 
 ]
 
