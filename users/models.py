@@ -53,8 +53,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ('C', 'CUSTOMER')
     )
     phone_number = PhoneNumberField(region='UZ', unique=True)
-    first_name = models.CharField(max_length=150, blank=True, null=True)
-    last_name = models.CharField(max_length=150, blank=True, null=True)
+    first_name = models.CharField(max_length=32, blank=True, null=True)
+    last_name = models.CharField(max_length=32, blank=True, null=True)
+    middle_name = models.CharField(max_length=32, blank=True, null=True)
     email = models.EmailField(blank=True, unique=True, null=True)
     gender = models.CharField(choices=BIO, max_length=1, null=True, blank=True)
     birthday = models.DateField(null=True, blank=True)
@@ -83,7 +84,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _('users')
 
     def __str__(self):
-        return f"{self.phone_number} - {'Staff' if self.is_staff else 'User'}"
-
-
-
+        if self.birthday:
+            return f'{self.birthday} -{self.phone_number}'
+        else:
+            return f"{self.phone_number} - {'Staff' if self.is_staff else 'User'}"
